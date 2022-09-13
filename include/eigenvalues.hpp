@@ -7,6 +7,10 @@
 #include "matrix.hpp"
 
 std::tuple<mat, std::vector<vec>> getKrylov(mat A, vec v, int m)
+/*
+Perfoms the Gram-Schmidt algorithm to create the Krylov (K^m{A,v})space for symmetric matrices.
+Outputs are the Matrix H^m and the vector basis V^m
+*/
 {
     int sz = A.N;
     assert(A.M == sz);
@@ -63,6 +67,12 @@ std::tuple<mat, std::vector<vec>> getKrylov(mat A, vec v, int m)
 }
 
 std::tuple<double, vec> power_iteration(mat A, vec q, double threshold, std::string name = "")
+/*
+Performs the power iteration using the matrix A and the strating vector q.
+The algorithm stops when the change in eigenvalue is below threshold.
+The timings for each iteration and the respective eigenvalue are written to a file with name name.
+Outputs are the eigenvalue and eigenvector.
+*/
 {
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -87,11 +97,8 @@ std::tuple<double, vec> power_iteration(mat A, vec q, double threshold, std::str
             lambda_old = lambda;
 
         lambda = dot(q, vecprod(A, q));
-        if (name != "")
-        {
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start);
-            f << i << " " << duration.count() << " " << std::setprecision(15) << lambda << "\n";
-        }
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start);
+        f << i << " " << duration.count() << " " << std::setprecision(15) << lambda << "\n";
 
         if (i > 0)
         {
@@ -105,6 +112,11 @@ std::tuple<double, vec> power_iteration(mat A, vec q, double threshold, std::str
 }
 
 std::tuple<double, vec> lanczos(mat A, vec v_0, int m, double err, std::string name)
+/*
+Performs the lanczos method on the matrix A with v_0 as the initial vector for the Krylov space.
+The initial guess for the power iteration is 1/sqrt(n)*(1, .. , 1).
+Outputs are the estimated eigenvalue and the eigenvector in the Krylov space.
+*/
 {
     vec q_0 = normalize(v_0);
     auto [T_m, V_krylov] = getKrylov(A, q_0, m);

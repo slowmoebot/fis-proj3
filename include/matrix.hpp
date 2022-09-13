@@ -19,23 +19,10 @@ struct mat
     std::vector<double> val;
 };
 
-struct mat_coo
-{
-    int N;
-    int M;
-    std::vector<int> I;
-    std::vector<int> J;
-    std::vector<double> val;
-};
-
-struct entry
-{
-    int row;
-    int col;
-    double val;
-};
-
 void disp_mat(mat M)
+/*
+Display matrix M for debugging
+*/
 {
     printf("N=%d, M=%d, nnz=%d\n", M.N, M.M, M.nnz);
     printf("Idx ");
@@ -54,6 +41,9 @@ void disp_mat(mat M)
 }
 
 void disp_vec(vec v)
+/*
+Display vector v
+*/
 {
     int sz = v.size();
     if (sz > 20)
@@ -72,6 +62,9 @@ void disp_vec(vec v)
 }
 
 mat read_mat(std::string path)
+/*
+Read matrix in csr format from file
+*/
 {
     mat matrix;
     std::ifstream fin(path);
@@ -100,6 +93,9 @@ mat read_mat(std::string path)
 }
 
 double dot(vec a, vec b)
+/*
+Dot product between vectors a and b
+*/
 {
     int sz = a.size();
     assert(b.size() == sz);
@@ -112,6 +108,9 @@ double dot(vec a, vec b)
 }
 
 vec scale(vec v, double a)
+/*
+scale vector v by a
+*/
 {
     for (size_t i = 0; i < v.size(); i++)
     {
@@ -121,6 +120,9 @@ vec scale(vec v, double a)
 }
 
 vec vec_add(vec v, vec w)
+/*
+add vectors v and w
+*/
 {
     int sz = v.size();
     assert(sz == w.size());
@@ -133,6 +135,9 @@ vec vec_add(vec v, vec w)
 }
 
 double norm(vec x)
+/*
+2-norm of x
+*/
 {
     int sz = x.size();
     double res = 0;
@@ -144,6 +149,9 @@ double norm(vec x)
 }
 
 vec normalize(vec x)
+/*
+normalize vector x
+*/
 {
     int sz = x.size();
     double x_abs = norm(x);
@@ -155,6 +163,9 @@ vec normalize(vec x)
 }
 
 vec vecprod_csr(mat matrix, vec vec)
+/*
+Matrix vector product of matrix and vec. With matrix in csr format
+*/
 {
     int sz = vec.size();
     assert(matrix.N == sz);
@@ -181,6 +192,11 @@ vec vecprod_csr(mat matrix, vec vec)
 }
 
 std::vector<double> vecprod_csc_t(mat matrix, std::vector<double> vec)
+/*
+Helper function for matrix product of symmetric matrices
+Matrix vector product of the transpose of matrix and vec. With matrix in csr format,
+therefore the function is performed using matrix as if it was in csc format. The diagonal is ignored.
+*/
 {
     size_t sz = vec.size();
 
@@ -202,6 +218,9 @@ std::vector<double> vecprod_csc_t(mat matrix, std::vector<double> vec)
 }
 
 std::vector<double> vecprod(mat matrix, std::vector<double> vec)
+/*
+Perform the matrix vector product using symmetry information
+*/
 {
     // Get result from vector product in compressed sparse row format
 

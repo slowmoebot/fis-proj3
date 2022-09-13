@@ -44,27 +44,5 @@ int main(int argc, char *argv[])
 {
     task1();
     task2();
-    /*
-    assert(argc > 1 && "Path to matrix has to be passed as first argument");
-
-    std::string path = argv[1];
-
-    mat A = read_mat(path);
-
-    std::vector<double> q_0(A.N, 1);
-
-    q_0 = normalize(q_0);
-    printf("%e\n", norm(q_0));
-
-    std::string name = "test.txt";
-
-    std::vector<int> ms = {30, 50, 75, 100};
-    std::vector<double> errs = {1e-2, 1e-4, 1e-6, 1e-10};
-
-    int m = 50;
-    auto [lambda_lanczos, v_lanczos] = lanczos(A, q_0, m, 1e-4, name);
-
-    printf("lanczos lambda = %e\n", lambda_lanczos);
-    */
     return 0;
 }
